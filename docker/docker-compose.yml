@@ -18,7 +18,7 @@ services:
     build: ./reports-manager
     volumes:
       - ./reports-manager:/app
-      - /app/node_modules
+      - /app/node_modules/
     ports:
       - "3003:3003"
     env_file:
@@ -26,6 +26,19 @@ services:
     command: npm run dev
     extra_hosts:
       - "domain:XX.X.X.XX"
+    networks:
+      - shared-network
+
+  nginx:
+    image: nginx:latest
+    container_name: API-SST-GATEWAY
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - staff
+      - reports-manager
     networks:
       - shared-network
       
